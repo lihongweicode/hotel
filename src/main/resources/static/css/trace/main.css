@@ -1,0 +1,119 @@
+body{
+	background: #fff;
+	font-family: "微软雅黑";
+}
+.d-box{
+	background: #f0f0f0;
+}
+.banner{
+	width: 7.5rem;
+	height: 3.53rem;
+	background: url(../../images/trace/banner_02.png) no-repeat center;
+	margin: auto;
+	background-size:100% 100% ;
+}
+.banner-img{
+	width: 1.27rem;
+	height: 1.27rem;
+	margin: auto;
+	padding-top: 0.4rem;
+	padding-bottom: 0.38rem;
+	display: block;
+}
+.banner-p1{
+	font-size: 0.38rem;
+	text-align: center;
+}
+.banner-p2{
+	font-size: 0.28rem;
+	text-align: center;
+	padding-top: 0.3rem;
+}
+.Commodityinformation{
+	width: 7.5rem;
+	height: 0.8rem;
+	margin:  auto;
+	margin-top: 0.2rem;
+	background: #fff;
+	border-bottom: 0.02rem solid #f0f0f0;
+	
+}
+.Commodityinformation p{
+	width: 7.07rem;
+	margin: auto;
+	font-size: 0.3rem;
+	line-height: 0.8rem;
+	text-align: left;
+	font-weight: 600;
+	
+}
+
+.Commodityinformation-box{
+	width: 7.5rem;
+	margin: auto;
+	background: #FFFFFF;
+	overflow: hidden;
+}
+.Commodityinformation-zt{
+	width: 7.07rem;
+	margin: auto;
+}
+.Commodityinformation-box-left{
+	width: 1.66rem;
+	float: left;
+	margin-left: 0.10rem;
+	padding: 0.2rem 0;
+}
+.Commodityinformation-box-left img{
+	width: 1.66rem;
+	height: 1.66rem;
+	
+}
+.Commodityinformation-box-right{
+	width: 5.1rem;
+	float: right;
+	font-size: 0.26rem;
+	padding-top: 0.07rem;
+	line-height: 0.48rem;
+}
+
+.Commodityinformation-box-right p span{
+	color: #999999;
+	font-size: 0.24rem;
+}
+
+.commo-1{
+	float: left !important;
+}
+.commo-2 p{
+	width: 50%;
+	float: left;
+
+}
+/*商品详情*/
+.commo-box {
+	padding-top: 0.3rem;
+	
+	
+}
+.commo-1-box{
+	width: 7.5rem;
+	border-bottom: 0.01rem solid #f0f0f0;
+}
+.commo-1-box-left{
+	float: left;
+}
+.commo-1-box-right{
+	float: right;
+	margin-right: 0.36rem;
+	margin-top: 0.3rem;
+}
+.commo-1-box-right img{
+	width: 0.4rem;
+	height: 0.4rem;
+	
+}
+
+.commodi-3{
+	margin-top: 0.2rem;
+}

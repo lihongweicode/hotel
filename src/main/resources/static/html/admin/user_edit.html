@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../../js/boot.js" type="text/javascript"></script>
+</head>
+<style>
+    .layui-form-label {
+        width: 100px;
+    }
+
+    .layui-form-item .layui-input-inline {
+        width: 300px;
+    }
+</style>
+<body>
+<div class="d-body">
+    <form class="layui-form" id="addForm">
+        <input type="hidden" class="layui-input" id="userId"name="userId" placeholder="请输入用户姓名">
+        <input type="hidden" class="layui-input" id="password" name="password" placeholder="请输入登录密码">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="name" lay-verify="required" name="name" placeholder="请输入用户姓名">
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">登录用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="username" lay-verify="required|username" name="username" placeholder="请输入登录用户名">
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">登录密码</label>
+            <div class="layui-input-inline">
+                <input type="password" class="layui-input" id="password" lay-verify="required" name="password" placeholder="请输入登录密码">
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">电子邮件</label>
+            <div class="layui-input-inline">
+                <input type="email" class="layui-input" id="email" lay-verify="required" name="email" placeholder="请输入电子邮件">
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系电话</label>
+            <div class="layui-input-inline">
+                <input type="phone" class="layui-input" id="phone" lay-verify="required" name="phone" placeholder="请输入联系电话">
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">住址</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="address" name="address" placeholder="请输入住址">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户状态</label>
+            <div class="layui-input-inline">
+                <select name="enable" lay-filter="enable" id="enable" lay-verify="required">
+                    <option value="">请选择用户状态</option>
+                    <option value="1">正常</option>
+                    <option value="0">禁用</option>
+                </select>
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属权限</label>
+            <div class="layui-input-inline">
+                <select name="auth.authId" lay-filter="authId" id="authId" lay-verify="required">
+                    <option value="">请选择用户权限</option>
+                </select>
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 130px;">
+                <a class="layui-btn" lay-submit lay-filter="subForm">提交</a>
+                <a class="layui-btn layui-btn-primary" onclick="goBackList();">取消</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    var id;
+    $(function () {
+        //判断token
+        layui.use(['form', 'layer','$api'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                $api = layui.$api
+
+            //表单验证
+            $("#addForm").validate({
+                ignore: ":hidden:not(select)",//解决无法校验select
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.parent().parent()); //修改错误提示信息 显示位置
+                }
+            });
+
+            form.verify({
+                username: function(value,item){
+                    $api.doGetAsync('/user/checkUser',{username:value},function (data) {
+                        console.log(data.user != null)
+                        if(data.user != null){
+                            return "用户名已存在,请更换！";
+                        }
+                    },false);
+                }
+            });
+
+            //设置一个对象来控制是否进入AJAX过程
+            var ajax_flag = false;
+            //监听提交
+            form.on('submit(subForm)', function () {
+                //判断表单验证是否通过
+                if ($("#addForm").valid()) {
+                    //如果正在提交则直接返回，停止执行
+                    if (ajax_flag) return;
+                    //标记当前状态为正在提交状态
+                    console.log($("#addForm").serialize())
+                    ajax_flag = true;
+                    $api.doPost(
+                        '/user/updateUser',
+                        $("#addForm").serialize(),
+                        function (data) {
+                            layer.msg(data.msg, {icon: data.icon}, function () {
+                                goBackList();
+                            });
+                        }
+                    );
+                }
+            });
+            $api.doGet('/auth/authAll',null,function (data) {
+                var list = data.authList;
+                for (var i = 0; i < list.length; i++) {
+                    //填充节点信息
+                    $("#authId").append('<option value="'+ list[i].authId +'">'+ list[i].authName +'</option>');
+                }
+                //重新渲染样式
+                form.render('select');
+                var thisURL = document.URL;
+                var getval = thisURL.split('?')[1];
+                var id = getval.split("=")[1];
+                //初始化数据
+                $api.doGet('/user/userOne/'+id,null,function (data) {
+                    var obj = eval(data.user);
+                    $("#userId").val(obj.userId);
+                    $("#enable [value="+ obj.enable +"]").attr("selected","selected");
+                    if(obj.auth != null && obj.auth.authId != null){
+                        $("#authId [value="+ obj.auth.authId +"]").attr("selected","selected");
+                    }
+                    //重新渲染样式
+                    form.render('select');
+                    $("#name").val(obj.name);
+                    $("#username").val(obj.username);
+                    $("#password").val(obj.password);
+                    $("#email").val(obj.email);
+                    $("#phone").val(obj.phone);
+                    $("#address").val(obj.address);
+                });
+            });
+        });
+    });
+</script>
+</html>

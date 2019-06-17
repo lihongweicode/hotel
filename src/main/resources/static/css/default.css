@@ -1,0 +1,32 @@
+/** kit_admin-v1.1.0 MIT License By http://kit/zhengjinfan.cn e-mail:zheng_jinfan@126.com */
+.kit-theme .kit-layout-admin .layui-header{
+    background-color: #ffffff;
+    box-shadow:0px 0px 7px 0px #000;
+}
+.layui-bg-black {
+    background-color: #008e57 !important;
+    color: #fff !important;
+}
+.layui-nav-itemed .layui-nav-child {
+    display: block;
+    padding: 0;
+    background-color: #05a96d !important;
+}
+.layui-nav {
+    position: relative;
+    /*padding: 0 20px;*/
+    background-color: #008D58;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 0;
+    box-sizing: border-box;
+}
+.layui-nav-tree .layui-nav-bar {
+    background-color: #008E57;
+}
+.layui-nav-tree .layui-nav-item a:hover {
+    background-color: #1dc383;
+}
+.layui-nav * {
+    font-size: 16px;
+}

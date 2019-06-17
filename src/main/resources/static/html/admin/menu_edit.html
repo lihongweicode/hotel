@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../../js/boot.js" type="text/javascript"></script>
+</head>
+<style>
+    .layui-form-label {
+        width: 100px;
+    }
+
+    .layui-form-item .layui-input-inline {
+        width: 300px;
+    }
+</style>
+<body>
+<div class="d-body">
+    <form class="layui-form" id="addForm">
+        <input type="hidden" class="layui-input" id="menuId"  name="menuId" placeholder="请输入菜单名称">
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单名称</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="menuName" lay-verify="required" name="menuName" placeholder="请输入菜单名称">
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单类型</label>
+            <div class="layui-input-inline">
+                <select name="menuType" lay-filter="menuType" id="menuType" lay-verify="required">
+                    <option value="">请选择菜单类型</option>
+                    <option value="MENU">菜单</option>
+                    <option value="BUTTON">按钮</option>
+                </select>
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">父级菜单</label>
+            <div class="layui-input-inline">
+                <select name="menuParent" lay-filter="menuParent" id="menuParent">
+                    <option value="">请选择父级菜单</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单路径</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="menuUrl" name="menuUrl"
+                       placeholder="请输入菜单路径">
+            </div>
+        </div>
+        <input type="hidden" class="layui-input" id="menuOrder" name="menuOrder"
+               placeholder="请输入菜单路径">
+       <!-- <div class="layui-form-item">
+            <label class="layui-form-label">菜单排序</label>
+            <div class="layui-input-inline">
+                <input type="hidden" class="layui-input" id="menuOrder" name="menuOrder"
+                       placeholder="请输入菜单路径">
+            </div>
+        </div>-->
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 130px;">
+                <a class="layui-btn" lay-submit lay-filter="subForm">提交</a>
+                <a class="layui-btn layui-btn-primary" onclick="goBackList();">取消</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    $(function () {
+        //判断token
+        layui.use(['form', 'layer','$api'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                $api = layui.$api
+
+            //表单验证
+            $("#addForm").validate({
+                ignore: ":hidden:not(select)",//解决无法校验select
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.parent().parent()); //修改错误提示信息 显示位置
+                }
+            });
+
+            //设置一个对象来控制是否进入AJAX过程
+            var ajax_flag = false;
+            //监听提交
+            form.on('submit(subForm)', function () {
+                //判断表单验证是否通过
+                if ($("#addForm").valid()) {
+                    //如果正在提交则直接返回，停止执行
+                    if (ajax_flag) return;
+                    //标记当前状态为正在提交状态
+                    console.log($("#addForm").serialize())
+                    ajax_flag = true;
+                    $api.doPost(
+                        '/menu/updateMenu',
+                        $("#addForm").serialize(),
+                        function (data) {
+                            layer.msg(data.msg, {icon: data.icon}, function () {
+                                goBackList();
+                            });
+                        }
+                    );
+                }
+            });
+            $api.doGet('/menu/oneLeveMenu',null,function (data) {
+                console.log(data);
+                var list = data.list;
+                $("#menuParent").append('<option value="">请选择父级菜单</option>');
+                for (var i = 0; i < list.length; i++) {
+                    //填充节点信息
+                    $("#menuParent").append('<option value="'+ list[i].menuId +'">'+ list[i].menuName +'</option>');
+                }
+                //重新渲染样式
+                form.render('select');
+                var thisURL = document.URL;
+                var getval = thisURL.split('?')[1];
+                var id = getval.split("=")[1];
+                //初始化数据
+                $api.doPost('/menu/menuOne',{menuId: id},function (data) {
+                    var obj = eval(data.data.menu);
+                    $("#menuId").val(obj.menuId);
+                    console.log(obj.menuType != null)
+                    if(obj.menuType != null){
+                        $("#menuType [value="+ obj.menuType.key +"]").attr("selected","selected");
+                    }
+                    if(obj.menuParent != null){
+                        $("#menuParent [value="+ obj.menuParent.menuId +"]").attr("selected","selected");
+                    }
+
+                    //重新渲染样式
+                    form.render('select');
+                    $("#menuName").val(obj.menuName);
+                    $("#menuUrl").val(obj.menuUrl);
+                    $("#menuOrder").val(obj.menuOrder);
+
+                });
+
+            });
+
+        });
+    });
+</script>
+</html>

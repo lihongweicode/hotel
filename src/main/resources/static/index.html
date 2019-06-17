@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>小两口麻辣烫</title>
+
+    <script src="../../js/boot.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="./css/font-awesome.min.css" media="all"/>
+    <link rel="stylesheet" href="./css/app.css" media="all"/>
+    <link rel="stylesheet" href="./css/default.css" media="all" id="skin" kit-skin/>
+</head>
+
+<style>
+    .kit-theme .kit-side {
+        box-shadow: 0 0 10px 0 #ccc;
+        top: 102px;
+    }
+
+    .kit-layout-admin .layui-header {
+        height: 100px;
+    }
+
+    .log {
+        float: left;
+        margin-left: 60px;
+        padding-top: 8px;
+        width: 90px;
+        height: 90px;
+        /*background-color: red;*/
+        background-image: url('../images/logo_03.png');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: 60px 10px;
+    }
+
+    .name {
+        float: left;
+        margin-left: 20px;
+        margin-top: 8px;
+        width: 500px;
+        height: 90px;
+    }
+
+    .li_1 {
+        width: 100%;
+        color: #333333;
+        margin-top: 20px;
+        min-height: 35px;
+        font-family: SimHei;
+        letter-spacing: 5px;
+        font-size: 26px;
+    }
+
+    .li_2 {
+        width: 100%;
+        font-family: ArialMT;
+        color: #333333;
+        font-size: 12px;
+    }
+
+    .setup {
+        float: right;
+        margin-right: 60px;
+        margin-top: 25px;
+        width: 45px;
+        height: 45px;
+        background-image: url('../images/top_sz_06.png');
+        background-repeat: no-repeat;
+    }
+
+    .msg {
+        float: right;
+        margin-right: 15px;
+        margin-top: 25px;
+        width: 45px;
+        height: 45px;
+        background-image: url('../images/top_tz_09.png');
+        background-repeat: no-repeat;
+    }
+
+    #logout {
+        color: #0C0C0C;
+    }
+</style>
+
+<body class="kit-theme">
+<div class="layui-layout layui-layout-admin kit-layout-admin">
+    <div class="layui-header">
+        <!--<div class="log"></div>-->
+        <div class="name">
+            <li class="li_1">小两口麻辣烫</li>
+            <li class="li_2">xiao liang kou ma la tang</li>
+        </div>
+        <ul class="layui-nav layui-layout-right kit-nav">
+            <li class="layui-nav-item">
+                <a href="javascript:">
+                    <img class="layui-nav-img" src="http://m.zhengjinfan.cn/images/0.jpg"> Van
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a data-options="{url:'basic.html',icon:'&#xe658;',title:'基本资料',id:'966'}" href="javascript:"
+                           kit-target><span>基本资料</span></a></dd>
+                    <dd><a href="javascript:">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="login.html" id="logout"><i aria-hidden="true"
+                                                                           class="fa fa-sign-out"></i> 注销</a>
+            </li>
+        </ul>
+        <!--<div class="setup"></div>
+        <div class="msg"></div>-->
+    </div>
+
+    <div class="layui-side layui-bg-black kit-side">
+        <div class="layui-side-scroll">
+            <!--<div class="kit-side-fold"><i class="fa fa-navicon" aria-hidden="true"></i></div>-->
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" id="menu" lay-filter="kitNavbar" kit-navbar>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body" id="container">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;"><i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop">&#xe63e;</i>
+            请稍等...
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        版权所有：李宏伟
+    </div>
+</div>
+<script>
+    var message;
+    layui.use(['app', 'message', 'jquery', 'layer', 'tokenUtils', '$api', 'element', 'navbar'], function () {
+        var app = layui.app,
+            $ = layui.jquery,
+            layer = layui.layer,
+            tokenUtils = layui.tokenUtils,
+            $api = layui.$api,
+            element = layui.element,
+            navbar = layui.navbar();
+
+        //进行token过期验证   --> 首次进行验证，之后每一分钟验证一次
+        tokenUtils.verify();
+        setTimeout(function () {
+            tokenUtils.verify();
+        }, 1000 * 60 * 1);
+
+        //将message设置为全局以便子页面调用
+        message = layui.message;
+        //主入口
+        app.set({
+            type: 'iframe'
+        }).init();
+
+        $api.doGet('/enums', null, function (data) {//动态渲染菜单
+            for (var i in data.enums) {
+                layui.sessionData(i, {
+                    key: i
+                    , value: data.enums[i]
+                });
+            }
+        });
+
+        $api.doGet('/menu/treeMenu', null, function (data) {//动态渲染菜单
+            navbar.set({
+                elem: '#menu',
+                data: data.list,
+                spreadOne: true,
+                cached: true
+            })
+            navbar.render();
+            navbar.on('click(menu)', function (data) {
+                tab.tabAdd({
+                    id: new Date().getTime(),
+                    title: data.field.title,
+                    icon: data.field.icon,
+                    url: data.field.href
+                });
+            });
+        });
+    });
+
+</script>
+</body>
+
+</html>

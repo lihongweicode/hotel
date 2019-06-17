@@ -1,0 +1,80 @@
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('1', '添加用户接口', NULL, '/user/saveUser', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('2', '用户分页接口', NULL, '/user/userList', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('3', '用户更新接口', NULL, '/user/updateUser', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('6', '获取所有权限接口', NULL, '/auth/authAll', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('7', '获取一条用户数据接口', NULL, '/user/userOne/', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('8', '删除一条用户数据接口', NULL, '/user/deleteUser', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('9', '权限分页接口', NULL, '/auth/authList', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('10', '获取所有一级菜单接口', NULL, '/menu/oneLeveMenu', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('11', '权限更新接口', NULL, '/auth/updateAuth', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('12', '获取所有菜单接口', NULL, '/menu/menuAll', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('13', '获取所有接口', NULL, '/api/apiAll', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('14', '获取一条权限数据', NULL, '/auth/authOne', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('15', '获取接口分页数据', NULL, '/api/apiList', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('16', '添加接口数据', NULL, '/api/saveApi', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('17', '获取一条接口数据', NULL, '/api/apiOne', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('18', '更新接口数据', NULL, '/api/updateApi', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('19', '菜单分页接口', NULL, '/menu/menuList', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('20', '添加权限接口', NULL, '/auth/saveAuth', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('21', '删除一条权限数据接口', NULL, '/auth/deleteAuth', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('22', '添加菜单接口', NULL, '/menu/saveMenu', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('23', '获取一条菜单数据接口', NULL, '/menu/menuOne', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('24', '更新菜单数据接口', NULL, '/menu/updateMenu', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('25', '删除一条菜单数据接口', NULL, '/menu/deleteMenu', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('27', '删除一条接口数据', NULL, '/api/deleteApi', 'POST');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('30', '配送进场列表', NULL, '/traceStorageIn/page', 'GET');
+INSERT INTO `sdipt_api` (`user_id`, `api_name`, `api_status`, `api_url`, `method`) VALUES ('31', '查询单个配送进场', NULL, '/traceStorageIn/', 'GET');
+
+
+INSERT INTO `sdipt_auth` (`auth_id`, `auth_name`) VALUES ('1', '系统管理员');
+
+
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '1');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '2');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '3');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '6');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '7');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '8');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '9');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '10');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '11');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '12');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '13');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '14');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '15');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '16');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '17');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '18');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '19');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '20');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '21');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '22');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '23');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '24');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '25');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '27');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '30');
+INSERT INTO `sdipt_auth_api` (`auth_id`, `api_id`) VALUES ('1', '31');
+
+
+INSERT INTO `sdipt_user` (`user_id`, `email`, `enable`, `password`, `username`, `name`, `image_url`, `phone`, `address`, `create_time`, `auth_id`, `type`, `dealer_code`) VALUES ('1', 'admin@dppc.org', '1', 'MGJmOTBkOTU5MDVjMDg2ZDM3YjliMDg3ODRhYjgyNWQ=', 'admin', '系统管理员', NULL, '18201694615', '北京', NULL, '1', '1', NULL);
+
+
+INSERT INTO `sdipt_menu` (`menu_id`, `api_id`, `menu_icon`, `menu_name`, `menu_type`, `menu_url`, `menu_parent`, `menu_order`) VALUES ('1', NULL, '&#xe620;', '系统管理', '0', '', NULL, '1');
+INSERT INTO `sdipt_menu` (`menu_id`, `api_id`, `menu_icon`, `menu_name`, `menu_type`, `menu_url`, `menu_parent`, `menu_order`) VALUES ('2', NULL, '', '菜单管理', '0', '/admin/menu_list.html', '1', '2');
+INSERT INTO `sdipt_menu` (`menu_id`, `api_id`, `menu_icon`, `menu_name`, `menu_type`, `menu_url`, `menu_parent`, `menu_order`) VALUES ('3', NULL, '', '用户管理', '0', '/admin/user_list.html', '1', '3');
+INSERT INTO `sdipt_menu` (`menu_id`, `api_id`, `menu_icon`, `menu_name`, `menu_type`, `menu_url`, `menu_parent`, `menu_order`) VALUES ('4', NULL, NULL, '接口管理', '0', '/admin/api_list.html', '1', '4');
+INSERT INTO `sdipt_menu` (`menu_id`, `api_id`, `menu_icon`, `menu_name`, `menu_type`, `menu_url`, `menu_parent`, `menu_order`) VALUES ('5', NULL, NULL, '权限管理', '0', '/admin/auth_list.html', '1', '5');
+INSERT INTO `sdipt_menu` (`menu_id`, `api_id`, `menu_icon`, `menu_name`, `menu_type`, `menu_url`, `menu_parent`, `menu_order`) VALUES ('12', NULL, NULL, '活动管理', '0', NULL, NULL, '20');
+INSERT INTO `sdipt_menu` (`menu_id`, `api_id`, `menu_icon`, `menu_name`, `menu_type`, `menu_url`, `menu_parent`, `menu_order`) VALUES ('13', NULL, NULL, '客户管理', '0', '/hotel/client_list.html', '12', '21');
+INSERT INTO `sdipt_menu` (`menu_id`, `api_id`, `menu_icon`, `menu_name`, `menu_type`, `menu_url`, `menu_parent`, `menu_order`) VALUES ('14', NULL, NULL, '操作日志', '0', '/hotel/operationLog_list.html', '12', '22');
+
+
+INSERT INTO `sdipt_auth_menu` (`auth_id`, `menu_id`) VALUES ('1', '1');
+INSERT INTO `sdipt_auth_menu` (`auth_id`, `menu_id`) VALUES ('1', '2');
+INSERT INTO `sdipt_auth_menu` (`auth_id`, `menu_id`) VALUES ('1', '3');
+INSERT INTO `sdipt_auth_menu` (`auth_id`, `menu_id`) VALUES ('1', '4');
+INSERT INTO `sdipt_auth_menu` (`auth_id`, `menu_id`) VALUES ('1', '5');
+INSERT INTO `sdipt_auth_menu` (`auth_id`, `menu_id`) VALUES ('1', '12');
+INSERT INTO `sdipt_auth_menu` (`auth_id`, `menu_id`) VALUES ('1', '13');
+INSERT INTO `sdipt_auth_menu` (`auth_id`, `menu_id`) VALUES ('1', '14');

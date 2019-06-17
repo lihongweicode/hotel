@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../../js/boot.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="../../js/ztree/css/zTreeStyle.css"/>
+</head>
+<style>
+    .layui-form-label {
+        width: 100px;
+    }
+
+    .layui-form-item .layui-input-inline {
+        width: 300px;
+    }
+</style>
+<body>
+<div class="d-body">
+    <form class="layui-form" id="addForm">
+        <input type="hidden" class="layui-input" id="authId" name="authId" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名称</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="authName" lay-verify="required" name="authName" placeholder="请输入权限名称">
+            </div>
+            <div class="layui-input-inline" style="width:10px">
+                <span style="color: red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属菜单</label>
+            <div class="layui-input-inline">
+                <ul id="tree-menu" class="ztree"></ul>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属接口</label>
+            <div class="layui-input-inline">
+                <ul id="tree-api" class="ztree"></ul>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 130px;">
+                <a class="layui-btn" lay-submit lay-filter="subForm">提交</a>
+                <a class="layui-btn layui-btn-primary" onclick="goBackList();">取消</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    $(function () {
+        //判断token
+        layui.use(['form', 'layer','$api','ztree'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                $api = layui.$api,
+                ztree = layui.ztree
+
+            //表单验证
+            $("#addForm").validate({
+                ignore: ":hidden:not(select)",//解决无法校验select
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.parent().parent()); //修改错误提示信息 显示位置
+                }
+            });
+
+            $api.doGet('/menu/oneLeveMenu', null, function (data) {
+                var list = data.list;
+                $("#menuParent").append('<option value="">请选择父级菜单</option>');
+                for (var i = 0; i < list.length; i++) {
+                    //填充节点信息
+                    $("#menuParent").append('<option value="' + list[i].menuId + '">' + list[i].menuName + '</option>');
+                }
+                //重新渲染样式
+                form.render('select');
+            });
+
+            //设置一个对象来控制是否进入AJAX过程
+            var ajax_flag = false;
+            //监听提交
+            form.on('submit(subForm)', function (data) {
+                //判断表单验证是否通过
+                if ($("#addForm").valid()) {
+                    //如果正在提交则直接返回，停止执行
+                    if (ajax_flag) return;
+                    //标记当前状态为正在提交状态
+//                    console.log($("#addForm").serialize())
+                    ajax_flag = true;
+                    //菜单
+                    var roleData = data.field;
+                    var nodesMenu = zTreeMenu.getCheckedNodes(true);
+                    var menuArray = "";
+                    $.each(nodesMenu,function(i,item){
+                        menuArray += item.id+",";
+                    })
+                    roleData.menuIds = menuArray;
+                    //接口
+                    var nodesApi = zTreeApi.getCheckedNodes(true);
+                    var apiArray = "";
+                    $.each(nodesApi,function(i,item){
+                        apiArray += item.id+",";
+                    })
+                    roleData.apiIds = apiArray
+                    $api.doPost(
+                        '/auth/updateAuth',
+                        roleData,
+                        function (data) {
+                            layer.msg(data.msg, {icon: data.icon}, function () {
+                                goBackList();
+                            });
+                        }
+                    );
+                }
+            });
+
+            var zTreeMenu;
+            var settingMenu = {
+                check: {//表示tree的节点在点击时的相关设置
+                    enable: true,//是否显示radio/checkbox
+                    chkStyle: "checkbox",//值为checkbox或者radio表示
+                    checkboxType: {p: "ps", s: "ps"},//表示父子节点的联动效果
+                    radioType: "level",//设置tree的分组
+                },
+                data: {
+                    simpleData: {//简单数据模式
+                        enable:true,
+                        idKey: "id",
+                        pIdKey: "pid",
+                        rootPId: ""
+                    }
+                }
+            };
+            $api.doGet(
+                '/menu/menuAll',
+                null,
+                function (result) {
+                    zTreeMenu = $.fn.zTree.init($("#tree-menu"), settingMenu, result.menuList);
+                }
+            );
+
+            var zTreeApi;
+            var settingApi = {
+                check: {//表示tree的节点在点击时的相关设置
+                    enable: true,//是否显示radio/checkbox
+                    chkStyle: "checkbox",//值为checkbox或者radio表示
+                    checkboxType: {p: "ps", s: "ps"},//表示父子节点的联动效果
+                    radioType: "level",//设置tree的分组
+                },
+                data: {
+                    simpleData: {//简单数据模式
+                        enable:true,
+                        idKey: "id",
+                        pIdKey: "pid",
+                        rootPId: ""
+                    }
+                },
+                check : {//使用ztree选中效果
+                    enable : true,
+                }
+            };
+            $api.doGet(
+                '/api/apiAll',
+                null,
+                function (result) {
+                    zTreeApi = $.fn.zTree.init($("#tree-api"), settingApi, result.apiList);
+                }
+            );
+
+            var thisURL = document.URL;
+            var getval = thisURL.split('?')[1];
+            var id = getval.split("=")[1];
+            //初始化数据
+            $api.doPost('/auth/authOne',{authId: id},function (data) {
+                var obj = eval(data.data.auth);
+                $("#authId").val(obj.authId);
+                $("#authName").val(obj.authName);
+                if(obj.menuList != null){ //勾选菜单
+                    zTreeMenu.expandAll(true);
+                    for(var i=0;i<obj.menuList.length;i++){
+                        //遍历需要选中的角色节点,然后利用该节点ID获得与他相同的tree中的节点，设置为选中
+                        var nodes = zTreeMenu.getNodesByParam("id",obj.menuList[i].id, null);
+                        //勾选当前选中的节点
+                        zTreeMenu.checkNode(nodes[0],true,false);
+                    }
+                }
+                if(obj.apiList != null){ //勾选接口
+                    zTreeApi.expandAll(true);
+                    for(var i=0;i<obj.apiList.length;i++){
+                        //遍历需要选中的角色节点,然后利用该节点ID获得与他相同的tree中的节点，设置为选中
+                        var nodes = zTreeApi.getNodesByParam("id",obj.apiList[i].id, null);
+                        //勾选当前选中的节点
+                        zTreeApi.checkNode(nodes[0],true,false);
+                    }
+                }
+            });
+        })
+    });
+
+</script>
+</html>

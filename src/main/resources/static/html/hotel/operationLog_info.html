@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../../js/boot.js" type="text/javascript"></script>
+</head>
+<style>
+    .layui-form-label {
+        width: 100px;
+    }
+
+    .layui-form-item .layui-input-inline {
+        width: 300px;
+    }
+</style>
+<body>
+<div class="d-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">客户ID</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="clientId" disabled  >
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">客户姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="clientName" disabled  >
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">操作信息</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="operationInfo" disabled  >
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 130px;">
+                <a class="layui-btn" onclick="goBackList();">返回</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    $(function () {
+        layui.use(['$api'], function () {
+            var $api = layui.$api;
+
+            var thisURL = document.URL;
+            var getval = thisURL.split('?')[1];
+            var id = getval.split("=")[1];
+
+            $api.doGet('/operationLog/' + id,null,function (data) {
+                var obj = eval(data.operationLog);
+                $("#clientId").val(obj.clientId);
+                $("#clientName").val(obj.clientName);
+                $("#operationInfo").val(obj.operationInfo);
+            });
+        });
+    });
+</script>
+</html>
